@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartLib Connect - College Library</title>
+  <meta name="description" content="SmartLib Connect - College Library Management System" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="logo-icon.png" />
+</head>
+<body>
+<!-- LOGIN / REGISTER SCREEN -->
+<div id="loginScreen">
+  <div class="login-card login-card-centered">
+    <!-- FORM PANEL ONLY -->
+    <div class="login-form-panel">
+      <!-- Brand Logo at top -->
+      <div class="login-brand login-brand-hero">
+        <img src="logo.png" alt="SmartLib Connect Logo" class="hero-logo-img" />
+        <div class="hero-brand-tag">Books &bull; Exchange &bull; Grow</div>
+      </div>
+
+      <!-- LOGIN -->
+
+      <div id="loginFormWrap">
+        <div class="role-selector" role="group">
+          <button class="role-btn active" id="roleStudent" onclick="setRole('student')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            Student
+          </button>
+          <button class="role-btn" id="roleAdmin" onclick="setRole('admin')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Admin / Staff
+          </button>
+        </div>
+        <form id="loginForm" onsubmit="handleLogin(event)" novalidate autocomplete="off">
+          <div class="login-field">
+            <label for="loginEmail">Email Address or Username</label>
+            <div class="login-input-wrap">
+              <svg class="field-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              <input type="text" id="loginEmail" class="login-input" placeholder="Enter email address or username" autocomplete="off" value="" />
+            </div>
+            <div class="login-error-msg" id="emailError">Please enter your email address or username.</div>
+          </div>
+          <div class="login-field">
+            <label for="loginPassword">Password</label>
+            <div class="login-input-wrap">
+              <svg class="field-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <input type="password" id="loginPassword" class="login-input" placeholder="Enter your password" autocomplete="new-password" value="" />
+              <button type="button" class="pwd-toggle" onclick="togglePassword('loginPassword','pt1')" id="pt1">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+            <div class="login-error-msg" id="passwordError">Password must be at least 4 characters.</div>
+          </div>
+          <div class="login-error-msg" id="loginError" style="margin-bottom:6px;font-size:.85rem;"></div>
+          <button type="submit" class="login-btn" id="loginBtn"><span class="btn-label">Sign In</span><div class="spinner"></div></button>
+        </form>
+        <p class="auth-switch-text">Don't have an account? <button class="auth-link" onclick="switchAuthTab('register')">Register here</button></p>
+      </div>
+      <!-- REGISTER -->
+      <div id="registerFormWrap" style="display:none;">
+        <form id="registerForm" onsubmit="handleRegister(event)" novalidate>
+          <div class="form-row-2">
+            <div class="login-field">
+              <label>Full Name *</label>
+              <div class="login-input-wrap">
+                <svg class="field-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <input type="text" id="regName" class="login-input" placeholder="e.g. Priya Nair"/>
+              </div>
+              <div class="login-error-msg" id="regNameError">Please enter your full name.</div>
+            </div>
+            <div class="login-field">
+              <label>Student ID *</label>
+              <div class="login-input-wrap">
+                <svg class="field-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                <input type="text" id="regStudentId" class="login-input" placeholder="e.g. STU2024011"/>
+              </div>
+              <div class="login-error-msg" id="regIdError">Please enter your student ID.</div>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="login-field">
+              <label>Email Address *</label>
+              <div class="login-input-wrap">
+                <svg class="field-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                <input type="email" id="regEmail" class="login-input" placeholder="your.email@college.edu"/>
+              </div>
+              <div class="login-error-msg" id="regEmailError">Please enter a valid email.</div>
+            </div>
+            <div class="login-field">
+              <label>Contact Number *</label>
+              <div class="login-input-wrap">
+                <svg class="field-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <input type="tel" id="regPhone" class="login-input" placeholder="e.g. 9876543210" oninput="validateRegistrationPhone()" onkeyup="validateRegistrationPhone()" onpaste="setTimeout(validateRegistrationPhone, 0)" onblur="validateRegistrationPhone()"/>
+              </div>
+              <div class="login-error-msg" id="regPhoneError">Phone number must contain exactly 10 digits.</div>
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="login-field">
+              <label>Course *</label>
+              <div class="login-input-wrap">
+                <svg class="field-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                <input type="text" id="regCourse" class="login-input" placeholder="e.g. B.Tech CSE"/>
+              </div>
+            </div>
+            <div class="login-field">
+              <label>Year</label>
+              <div class="login-input-wrap">
+                <svg class="field-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                <select id="regYear" class="login-input" style="padding-left:36px;">
+                  <option value="">Year...</option><option value="1">Year 1</option><option value="2">Year 2</option><option value="3">Year 3</option><option value="4">Year 4</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="login-field">
+            <label>Password *</label>
+            <div class="login-input-wrap">
+              <svg class="field-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <input type="password" id="regPassword" class="login-input" placeholder="Create a secure password" oninput="checkPasswordRequirements('regPassword', 'reg-pwd-rules')"/>
+              <button type="button" class="pwd-toggle" onclick="togglePassword('regPassword','pt2')" id="pt2">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+            <div class="pwd-rules-box" id="reg-pwd-rules" style="margin-top:6px;font-size:0.75rem;line-height:1.45;background:var(--bg-card);padding:8px 10px;border-radius:var(--radius-sm);border:1px solid var(--border);">
+              <div style="font-weight:600;margin-bottom:4px;color:var(--text-main);">Password requirements:</div>
+              <div id="reg-pwd-rules-len" class="pwd-rule-item" style="color:var(--text-muted);">&#x25CF; At least 6 characters</div>
+              <div id="reg-pwd-rules-upper" class="pwd-rule-item" style="color:var(--text-muted);">&#x25CF; At least 1 uppercase letter (A-Z)</div>
+              <div id="reg-pwd-rules-lower" class="pwd-rule-item" style="color:var(--text-muted);">&#x25CF; At least 1 lowercase letter (a-z)</div>
+              <div id="reg-pwd-rules-num" class="pwd-rule-item" style="color:var(--text-muted);">&#x25CF; At least 1 number (0-9)</div>
+              <div id="reg-pwd-rules-sym" class="pwd-rule-item" style="color:var(--text-muted);">&#x25CF; At least 1 symbol / special character (!@#$%^&amp;*...)</div>
+            </div>
+            <div class="login-error-msg" id="regPassError">Password does not meet the security requirements.</div>
+          </div>
+          <div class="login-error-msg" id="registerError" style="margin-bottom:6px;font-size:.85rem;"></div>
+          <button type="submit" class="login-btn" id="registerBtn"><span class="btn-label">Create Account</span><div class="spinner"></div></button>
+        </form>
+        <p class="auth-switch-text">Already have an account? <button class="auth-link" onclick="switchAuthTab('login')">Sign in</button></p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-brand">
+      <img src="logo.png" alt="SmartLib Connect" class="sidebar-logo-img" />
+    </div>
+    <button class="sidebar-close" onclick="closeSidebar()">&#10005;</button>
+  </div>
+  <div class="nav-section-label">Main</div>
+  <ul class="nav-list">
+    <li><button class="nav-item active" onclick="navigate('overview')" id="nav-overview">
+      <span class="nav-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+      <span>Overview</span>
+    </button></li>
+    <li><button class="nav-item" onclick="navigate('catalogue')" id="nav-catalogue">
+      <span class="nav-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+      <span>Book Catalogue</span>
+    </button></li>
+    <li><button class="nav-item" onclick="navigate('loans')" id="nav-loans">
+      <span class="nav-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></span>
+      <span>Borrow &amp; Returns</span>
+    </button></li>
+    <li><button class="nav-item" onclick="navigate('students')" id="nav-students">
+      <span class="nav-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+      <span>Student Records</span>
+    </button></li>
+  </ul>
+  <div class="nav-section-label">Community</div>
+  <ul class="nav-list">
+    <li><button class="nav-item" onclick="navigate('exchange')" id="nav-exchange">
+      <span class="nav-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
+      <span>Book Exchange</span>
+      <span class="nav-badge" id="exchangeBadge">3</span>
+    </button></li>
+    <li><button class="nav-item" onclick="navigate('recommendations')" id="nav-recommendations">
+      <span class="nav-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+      <span>Book Recommendation</span>
+    </button></li>
+  </ul>
+  <div class="sidebar-footer">
+    <div class="sidebar-user" id="sidebarUserBox" onclick="handleProfileClick()" style="cursor:pointer;" title="Click to view &amp; edit profile / login info">
+      <div class="user-avatar">LA</div>
+      <div>
+        <div class="user-name">Library Admin</div>
+        <div class="user-role">Staff &middot; Admin</div>
+      </div>
+      <span class="user-edit-icon" title="Edit Profile">&#9998;</span>
+    </div>
+  </div>
+</nav>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+<header class="topbar">
+  <button class="menu-btn" onclick="openSidebar()"><span></span><span></span><span></span></button>
+  <div class="topbar-title" id="topbarTitle">Overview</div>
+  <div class="topbar-actions">
+    <button class="btn btn-logout" id="topbarLogoutBtn" onclick="handleLogout()" title="Log out of SmartLib Connect">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+        <polyline points="16 17 21 12 16 7"></polyline>
+        <line x1="21" y1="12" x2="9" y2="12"></line>
+      </svg>
+      <span>Logout</span>
+    </button>
+  </div>
+</header>
+<div class="toast" id="toast"></div>
+<main class="main-content" id="mainContent">
+  <!-- OVERVIEW -->
+  <section class="page active" id="page-overview">
+    <div class="page-header">
+      <div>
+        <h1 id="overview-heading">Good evening</h1>
+        <p class="page-subtitle" id="overview-subtitle">Here is what is happening in the library today.</p>
+      </div>
+    </div>
+
+    <!-- Student Book Search Bar Above Dashboard (Requirement 12) -->
+    <div id="studentOverviewSearchSection" class="overview-search-section" style="display:none;margin-bottom:22px;">
+      <div class="search-wrap overview-search-wrap">
+        <span class="search-icon">&#128269;</span>
+        <input type="search" id="overviewBookSearch" class="search-input" placeholder="Search books in library catalogue by title, author, or subject..." oninput="handleOverviewBookSearch()" />
+        <button type="button" class="overview-search-clear" id="clearOverviewSearch" onclick="clearOverviewBookSearch()" style="display:none;">&#10005;</button>
+      </div>
+      <div id="overviewSearchResults" class="overview-search-dropdown" style="display:none;"></div>
+    </div>
+
+    <!-- Admin Stats Grid (6 cards) -->
+    <div class="stats-grid" id="adminStatsGrid">
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(95,158,160,.1);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5F9EA0" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        </div>
+        <div class="stat-body"><div class="stat-value" id="stat-totalBooks">0</div><div class="stat-label">Total Books</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(60,179,113,.1);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3CB371" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div class="stat-body"><div class="stat-value" id="stat-availBooks">0</div><div class="stat-label">Available Now</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(95,158,160,.1);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5F9EA0" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        </div>
+        <div class="stat-body"><div class="stat-value" id="stat-onLoan">0</div><div class="stat-label">Books Borrowed</div></div>
+      </div>
+      <div class="stat-card overdue-card">
+        <div class="stat-icon" style="background:rgba(224,92,92,.1);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E05C5C" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="stat-body"><div class="stat-value" id="stat-overdue">0</div><div class="stat-label">Overdue Borrows</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(143,203,155,.1);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6AAF7A" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <div class="stat-body"><div class="stat-value" id="stat-pendingExchange">0</div><div class="stat-label">Pending Exchanges</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(95,158,160,.1);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5F9EA0" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="stat-body"><div class="stat-value" id="stat-students">0</div><div class="stat-label">Registered Students</div></div>
+      </div>
+    </div>
+
+    <!-- Student Stats Grid (Accurate 4 cards only: Requirement 13) -->
+    <div class="stats-grid student-stats-grid" id="studentStatsGrid" style="display:none;">
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(95,158,160,.1);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5F9EA0" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        </div>
+        <div class="stat-body"><div class="stat-value" id="stat-student-totalBooks">0</div><div class="stat-label">Total Books</div></div>
+      </div>
+      <div class="stat-card" id="studentPendingDuesCard">
+        <div class="stat-icon" style="background:rgba(224,92,92,.1);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E05C5C" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="stat-body"><div class="stat-value" id="stat-student-pendingDues">Rs 0</div><div class="stat-label">Pending Dues</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(60,179,113,.1);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3CB371" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        </div>
+        <div class="stat-body"><div class="stat-value" id="stat-student-borrowed">0</div><div class="stat-label">Issued / Borrowed</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(235,160,50,.1);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E69500" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <div class="stat-body"><div class="stat-value" id="stat-student-pendingRequests">0</div><div class="stat-label">Pending Book Requests</div></div>
+      </div>
+    </div>
+
+    <!-- Admin: Pending Book Issue Requests -->
+    <div id="pendingIssuePanel" style="display:none;margin-bottom:18px;">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">&#128235; Pending Book Requests</h2>
+          <button class="link-btn" onclick="navigate('loans')">View all borrows</button>
+        </div>
+        <div id="pendingIssueList"></div>
+      </div>
+    </div>
+    <div class="overview-grid" id="overviewGridContainer">
+      <div class="card" id="overviewUpcomingCard"><div class="card-header"><h2 class="card-title">Upcoming Due Dates</h2><button class="link-btn" onclick="navigate('loans')">View all</button></div><div id="upcomingDueDates"></div></div>
+      <div class="card" id="overviewActivityCard"><div class="card-header"><h2 class="card-title">Recent Activity</h2></div><ul class="activity-list" id="activityList"></ul></div>
+    </div>
+
+    <!-- Student My Listed Books for Exchange Section -->
+    <div id="studentMyListingsSection" style="display:none;margin-top:24px;">
+      <div class="card">
+        <div class="card-header" style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <h2 class="card-title">&#128214; My Listed Books for Exchange</h2>
+            <p class="page-subtitle" style="margin:2px 0 0;font-size:0.82rem;">Your used book listings available to fellow students.</p>
+          </div>
+          <button class="btn btn-outline-mint btn-sm" onclick="openModal('listBookModal')">+ List a Book</button>
+        </div>
+        <div id="studentMyListingsContainer" style="padding:16px 20px;"></div>
+      </div>
+    </div>
+
+    <!-- Student Book Recommendations Section (Requirement 11) -->
+    <div id="studentRecommendationsSection" style="display:none;margin-top:24px;">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 class="card-title">&#128218; Book Recommendations</h2>
+            <p class="page-subtitle" style="margin:2px 0 0;font-size:0.82rem;">Curated picks and trending reads for college students.</p>
+          </div>
+        </div>
+        <div class="rec-tabs" id="studentRecTabs" style="padding:14px 20px 0;">
+          <button class="rec-tab active" onclick="filterStudentRec('popular',this)">Popular This Month</button>
+          <button class="rec-tab" onclick="filterStudentRec('new',this)">Recently Added</button>
+        </div>
+        <div class="rec-grid" id="studentRecGrid" style="padding:16px 20px 20px;"></div>
+      </div>
+    </div>
+  </section>
+  <!-- CATALOGUE -->
+  <section class="page" id="page-catalogue">
+    <div class="page-header"><div><h1>Book Catalogue</h1><p class="page-subtitle">Browse and manage the library collection.</p></div><button class="btn btn-primary" onclick="openModal('addBookModal')">+ Add Book</button></div>
+    <div class="search-filter-bar">
+      <div class="search-wrap"><span class="search-icon">&#128269;</span><input type="search" id="bookSearch" class="search-input" placeholder="Search by title, author, or subject..." oninput="renderCatalogue()"/></div>
+      <select id="availFilter" class="filter-select" onchange="renderCatalogue()"><option value="all">All Books</option><option value="available">Available</option><option value="unavailable">On Loan</option></select>
+      <select id="subjectFilter" class="filter-select" onchange="renderCatalogue()"><option value="all">All Subjects</option></select>
+    </div>
+    <div class="books-grid" id="booksGrid"></div>
+    <div class="empty-state hidden" id="catalogueEmpty"><div class="empty-icon">&#128221;</div><h3>No books found</h3><p>Try a different search term or filter.</p></div>
+  </section>
+  <!-- BORROW & RETURNS -->
+  <section class="page" id="page-loans">
+    <div class="page-header">
+      <div>
+        <h1>Borrow &amp; Returns</h1>
+        <p class="page-subtitle">Issue / borrow books, record returns, and manage fines. <span class="fine-rule-badge">Fine: Rs.5 per overdue day</span></p>
+      </div>
+      <div class="header-action-group" style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-mint" id="loansDirectIssueBtn" onclick="openDirectIssueModal()">+ Direct Borrow (Non-Account)</button>
+        <button class="btn btn-primary" id="loansIssueBookBtn" onclick="openModal('issueBookModal')">+ Issue / Borrow Book</button>
+      </div>
+    </div>
+    <!-- Pending requests panel (filled by JS based on role) -->
+    <div id="loansIssueRequestsPanel"></div>
+    <div class="tabs">
+      <button class="tab active" onclick="filterLoans('all',this)">All Borrows</button>
+      <button class="tab" onclick="filterLoans('active',this)">Active Borrows</button>
+      <button class="tab" onclick="filterLoans('overdue',this)">Overdue Borrows</button>
+      <button class="tab" onclick="filterLoans('returned',this)">Returned Borrows</button>
+    </div>
+    <div class="table-wrap">
+      <table class="data-table" id="loansTable">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Book</th>
+            <th>Borrowed Date</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th>Fine</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="loansTableBody"></tbody>
+      </table>
+    </div>
+    <div class="empty-state hidden" id="loansEmpty">
+      <div class="empty-icon">&#128203;</div>
+      <h3>No borrows found</h3>
+      <p>Issue or borrow a book to get started.</p>
+    </div>
+  </section>
+  <!-- STUDENTS -->
+  <section class="page" id="page-students">
+    <div class="page-header"><div><h1>Student Records</h1><p class="page-subtitle">Manage registered library members.</p></div><button class="btn btn-primary" onclick="openModal('addStudentModal')">+ Add Student</button></div>
+    <div class="search-filter-bar">
+      <div class="search-wrap"><span class="search-icon">&#128269;</span><input type="search" id="studentSearch" class="search-input" placeholder="Search by name, ID, or course..." oninput="renderStudents()"/></div>
+      <select id="yearFilter" class="filter-select" onchange="renderStudents()"><option value="all">All Years</option><option value="1">Year 1</option><option value="2">Year 2</option><option value="3">Year 3</option><option value="4">Year 4</option></select>
+    </div>
+    <div class="students-grid" id="studentsGrid"></div>
+    <div class="empty-state hidden" id="studentsEmpty"><div class="empty-icon">&#128100;</div><h3>No students found</h3><p>Add a student or try a different search.</p></div>
+  </section>
+  <!-- EXCHANGE -->
+  <section class="page" id="page-exchange">
+    <div class="page-header">
+      <div>
+        <h1>Student Book Exchange</h1>
+        <p class="page-subtitle">Students can list used books for peers. Browse, request, and connect.</p>
+      </div>
+      <button class="btn btn-primary" id="exchangeListBookBtn" onclick="openModal('listBookModal')">+ List a Used Book</button>
+    </div>
+    <div class="tabs" id="exchangeViewTabs" style="margin-bottom:14px;">
+      <button class="tab active" onclick="filterExchangeView('all', this)">All Listings</button>
+      <button class="tab" id="myListingsTab" onclick="filterExchangeView('my', this)">My Listed Books</button>
+    </div>
+    <div class="search-filter-bar">
+      <div class="search-wrap"><span class="search-icon">&#128269;</span><input type="search" id="exchangeSearch" class="search-input" placeholder="Search listings..." oninput="renderExchange()"/></div>
+      <select id="exchangeSubjectFilter" class="filter-select" onchange="renderExchange()"><option value="all">All Subjects</option></select>
+      <select id="exchangeConditionFilter" class="filter-select" onchange="renderExchange()"><option value="all">Any Condition</option><option value="Like New">Like New</option><option value="Good">Good</option><option value="Fair">Fair</option></select>
+    </div>
+    <div class="exchange-grid" id="exchangeGrid"></div>
+    <div class="empty-state hidden" id="exchangeEmpty"><div class="empty-icon">&#129309;</div><h3>No listings yet</h3><p>Be the first to list a used book!</p></div>
+  </section>
+  <!-- RECOMMENDATIONS -->
+  <section class="page" id="page-recommendations">
+    <div class="page-header"><div><h1>Recommendations</h1><p class="page-subtitle">Curated picks and trending reads.</p></div></div>
+    <div class="rec-tabs"><button class="rec-tab active" onclick="filterRec('popular',this)">Popular This Month</button><button class="rec-tab" onclick="filterRec('new',this)">Recently Added</button></div>
+    <div class="rec-grid" id="recGrid"></div>
+  </section>
+</main>
+<!-- MODALS -->
+<!-- 1. Add Book Modal (Admin) with photo option (Requirement 6) -->
+<div class="modal-overlay" id="addBookModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Add New Book</h2>
+      <button class="modal-close" onclick="closeModal('addBookModal')">&#10005;</button>
+    </div>
+    <form id="addBookForm" onsubmit="submitAddBook(event)">
+      <div class="form-grid">
+        <div class="form-group full"><label>Book Title *</label><input type="text" id="ab-title" required placeholder="e.g. Introduction to Algorithms"/></div>
+        <div class="form-group"><label>Author(s) *</label><input type="text" id="ab-author" required/></div>
+        <div class="form-group"><label>Subject *</label><input type="text" id="ab-subject" required/></div>
+        <div class="form-group"><label>ISBN</label><input type="text" id="ab-isbn"/></div>
+        <div class="form-group"><label>Total Copies *</label><input type="number" id="ab-copies" required min="1" value="1"/></div>
+        <div class="form-group"><label>Year Published</label><input type="number" id="ab-year" min="1900" max="2030"/></div>
+        <div class="form-group full">
+          <label>Book Cover Photo (Optional)</label>
+          <input type="file" id="ab-photo" accept="image/*" onchange="handlePhotoSelect(event, 'ab')" />
+          <div id="ab-photo-preview" class="photo-preview-wrap" style="display:none;margin-top:8px;">
+            <img id="ab-preview-img" src="" alt="Cover Preview" class="photo-preview-thumb" />
+            <button type="button" class="btn-clear-photo" onclick="clearPhotoPreview('ab')" title="Remove photo" aria-label="Remove photo">&#10005;</button>
+          </div>
+        </div>
+        <div class="form-group full"><label>Description</label><textarea id="ab-description" rows="3"></textarea></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('addBookModal')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Add Book</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 1b. Edit Book Modal (Admin) -->
+<div class="modal-overlay" id="editBookModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Edit Book Details</h2>
+      <button class="modal-close" onclick="closeModal('editBookModal')">&#10005;</button>
+    </div>
+    <form id="editBookForm" onsubmit="submitEditBook(event)">
+      <input type="hidden" id="eb-id" value="" />
+      <div class="form-grid">
+        <div class="form-group full"><label>Book Title *</label><input type="text" id="eb-title" required placeholder="e.g. Introduction to Algorithms"/></div>
+        <div class="form-group"><label>Author(s) *</label><input type="text" id="eb-author" required/></div>
+        <div class="form-group"><label>Subject *</label><input type="text" id="eb-subject" required/></div>
+        <div class="form-group"><label>ISBN</label><input type="text" id="eb-isbn"/></div>
+        <div class="form-group"><label>Total Copies *</label><input type="number" id="eb-copies" required min="1" value="1"/></div>
+        <div class="form-group"><label>Year Published</label><input type="number" id="eb-year" min="1900" max="2030"/></div>
+        <div class="form-group full">
+          <label>Book Cover Photo (Optional)</label>
+          <input type="file" id="eb-photo" accept="image/*" onchange="handlePhotoSelect(event, 'eb')" />
+          <div id="eb-photo-preview" class="photo-preview-wrap" style="display:none;margin-top:8px;">
+            <img id="eb-preview-img" src="" alt="Cover Preview" class="photo-preview-thumb" />
+            <button type="button" class="btn-clear-photo" onclick="clearPhotoPreview('eb')" title="Remove photo" aria-label="Remove photo">&#10005;</button>
+          </div>
+        </div>
+        <div class="form-group full"><label>Description</label><textarea id="eb-description" rows="3"></textarea></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('editBookModal')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 2. Issue / Borrow Book Modal (Requirement 5: Select book -> Select student -> Confirm & issue) -->
+<div class="modal-overlay" id="issueBookModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Issue Book to Student</h2>
+      <button class="modal-close" onclick="closeModal('issueBookModal')">&#10005;</button>
+    </div>
+
+    <!-- Selected Book Details Summary (Shown when book is selected) -->
+    <div id="ib-selected-book-card" style="display:none;margin:12px 24px 0;padding:12px 14px;background:rgba(95,158,160,0.08);border:1.5px solid var(--blue);border-radius:var(--radius-sm);align-items:center;justify-content:space-between;gap:12px;">
+      <div style="display:flex;align-items:center;gap:12px;min-width:0;flex:1;">
+        <div id="ib-book-cover" style="width:36px;height:48px;border-radius:4px;overflow:hidden;flex-shrink:0;background:var(--border);"></div>
+        <div style="min-width:0;flex:1;">
+          <div style="font-size:0.72rem;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:0.05em;">Selected Book</div>
+          <div id="ib-book-title" style="font-weight:700;font-size:0.95rem;color:var(--text-main);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></div>
+          <div id="ib-book-meta" style="font-size:0.78rem;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></div>
+        </div>
+      </div>
+      <button type="button" id="ib-change-book-btn" class="btn btn-ghost btn-sm" onclick="showBookSelectorInModal()" style="font-size:0.75rem;flex-shrink:0;">Change Book</button>
+    </div>
+
+    <form id="issueBookForm" onsubmit="submitIssueBook(event)">
+      <input type="hidden" id="ib-selected-book-id" value="" />
+      <div class="form-grid">
+        <!-- Step 1: Book Selector (Only shown if book not yet selected) -->
+        <div class="form-group full" id="ib-book-select-group">
+          <label>Step 1: Select Book *</label>
+          <select id="ib-book" onchange="handleModalBookSelect(this.value)">
+            <option value="">Select an available book...</option>
+          </select>
+        </div>
+        <!-- Step 2: Student Selector -->
+        <div class="form-group full" id="ib-student-select-group">
+          <label id="ib-student-label">Step 2: Select Student *</label>
+          <select id="ib-student" required>
+            <option value="">Select a student...</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Issue Date *</label><input type="date" id="ib-issue" required/></div>
+        <div class="form-group"><label>Due Date *</label><input type="date" id="ib-due" required/></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('issueBookModal')">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="ib-submit-btn">Confirm &amp; Issue Book</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 3. Direct Borrow Modal -->
+<div class="modal-overlay" id="directIssueModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Direct Borrow &mdash; Non-Account Student</h2>
+      <button class="modal-close" onclick="closeModal('directIssueModal')">&#10005;</button>
+    </div>
+    <div class="modal-note" style="margin:12px 24px 0;background:rgba(95,158,160,0.08);border-left:3px solid var(--blue);padding:9px 12px;font-size:0.8rem;color:var(--text-sub);border-radius:var(--radius-sm);">&#9432; <strong>Direct Borrow:</strong> Records the borrow immediately for students without a website account.</div>
+    <form id="directIssueForm" onsubmit="submitDirectIssueBook(event)">
+      <div class="form-grid">
+        <div class="form-group"><label>Student Full Name *</label><input type="text" id="di-name" required placeholder="e.g. Rohan Gupta"/></div>
+        <div class="form-group"><label>Student ID / Roll No *</label><input type="text" id="di-id" required placeholder="e.g. OFFLINE-2024-001"/></div>
+        <div class="form-group"><label>Course / Department *</label><input type="text" id="di-course" required placeholder="e.g. B.Tech Mechanical"/></div>
+        <div class="form-group"><label>Academic Year *</label><select id="di-year" required><option value="1">Year 1</option><option value="2">Year 2</option><option value="3">Year 3</option><option value="4">Year 4</option></select></div>
+        <div class="form-group full">
+          <label>Contact Phone Number *</label>
+          <input type="tel" id="di-phone" required placeholder="e.g. 9876543210" oninput="validateAdminPhone('di-phone', 'di-phone-error')" onkeyup="validateAdminPhone('di-phone', 'di-phone-error')" onpaste="setTimeout(()=>validateAdminPhone('di-phone', 'di-phone-error'),0)"/>
+          <div class="login-error-msg" id="di-phone-error" style="display:none;color:var(--danger);font-size:0.8rem;margin-top:4px;">Contact number must contain exactly 10 digits.</div>
+        </div>
+        <div class="form-group full"><label>Book to Issue *</label><select id="di-book" required><option value="">Select an available book...</option></select></div>
+        <div class="form-group"><label>Borrowed Date *</label><input type="date" id="di-issue" required/></div>
+        <div class="form-group"><label>Due Date *</label><input type="date" id="di-due" required/></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('directIssueModal')">Cancel</button>
+        <button type="submit" class="btn btn-mint">&#10003; Record Direct Borrow</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 4. Add Student Modal (Admin) -->
+<div class="modal-overlay" id="addStudentModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Add Student</h2>
+      <button class="modal-close" onclick="closeModal('addStudentModal')">&#10005;</button>
+    </div>
+    <form id="addStudentForm" onsubmit="submitAddStudent(event)">
+      <div class="form-grid">
+        <div class="form-group"><label>Full Name *</label><input type="text" id="as-name" required placeholder="e.g. Rohan Gupta"/></div>
+        <div class="form-group"><label>Student ID *</label><input type="text" id="as-id" required placeholder="e.g. STU2024015"/></div>
+        <div class="form-group"><label>Email Address *</label><input type="email" id="as-email" required placeholder="student@college.edu"/></div>
+        <div class="form-group">
+          <label>Contact Number (Phone) *</label>
+          <input type="tel" id="as-phone" required placeholder="e.g. 9876543210" oninput="validateAdminPhone('as-phone', 'as-phone-error')" onkeyup="validateAdminPhone('as-phone', 'as-phone-error')" onpaste="setTimeout(()=>validateAdminPhone('as-phone', 'as-phone-error'),0)"/>
+          <div class="login-error-msg" id="as-phone-error" style="display:none;color:var(--danger);font-size:0.8rem;margin-top:4px;">Contact number must contain exactly 10 digits.</div>
+        </div>
+        <div class="form-group"><label>Course *</label><input type="text" id="as-course" required placeholder="e.g. B.Tech CSE"/></div>
+        <div class="form-group">
+          <label>Academic Year *</label>
+          <select id="as-year" required>
+            <option value="">Select...</option>
+            <option value="1">Year 1</option>
+            <option value="2">Year 2</option>
+            <option value="3">Year 3</option>
+            <option value="4">Year 4</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('addStudentModal')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Add Student</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 4b. Edit Student Modal (Admin) -->
+<div class="modal-overlay" id="editStudentModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Edit Student Details</h2>
+      <button class="modal-close" onclick="closeModal('editStudentModal')">&#10005;</button>
+    </div>
+    <form id="editStudentForm" onsubmit="submitEditStudent(event)">
+      <input type="hidden" id="es-id" value="" />
+      <div class="form-grid">
+        <div class="form-group"><label>Full Name *</label><input type="text" id="es-name" required /></div>
+        <div class="form-group"><label>Student ID *</label><input type="text" id="es-id-num" required /></div>
+        <div class="form-group"><label>Email Address *</label><input type="email" id="es-email" required /></div>
+        <div class="form-group">
+          <label>Contact Number (Phone) *</label>
+          <input type="tel" id="es-phone" required placeholder="e.g. 9876543210" oninput="validateAdminPhone('es-phone', 'es-phone-error')" onkeyup="validateAdminPhone('es-phone', 'es-phone-error')" onpaste="setTimeout(()=>validateAdminPhone('es-phone', 'es-phone-error'),0)"/>
+          <div class="login-error-msg" id="es-phone-error" style="display:none;color:var(--danger);font-size:0.8rem;margin-top:4px;">Contact number must contain exactly 10 digits.</div>
+        </div>
+        <div class="form-group"><label>Course *</label><input type="text" id="es-course" required /></div>
+        <div class="form-group">
+          <label>Academic Year *</label>
+          <select id="es-year" required>
+            <option value="1">Year 1</option>
+            <option value="2">Year 2</option>
+            <option value="3">Year 3</option>
+            <option value="4">Year 4</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('editStudentModal')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 5. List Used Book Modal (Requirement 2 & 6: Remove "Your Name" dropdown, add photo option) -->
+<div class="modal-overlay" id="listBookModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">List a Used Book</h2>
+      <button class="modal-close" onclick="closeModal('listBookModal')">&#10005;</button>
+    </div>
+    <div class="modal-note" style="margin:12px 24px 0;background:rgba(95,158,160,0.08);border-left:3px solid var(--blue);padding:9px 12px;font-size:0.82rem;color:var(--text-sub);border-radius:var(--radius-sm);">
+      Listing as: <strong id="lb-seller-name" style="color:var(--text-main);">Logged In Student</strong>
+    </div>
+    <form id="listBookForm" onsubmit="submitListBook(event)">
+      <div class="form-grid">
+        <div class="form-group full"><label>Book Title *</label><input type="text" id="lb-title" required placeholder="e.g. Engineering Mathematics Vol. 2"/></div>
+        <div class="form-group"><label>Author *</label><input type="text" id="lb-author" required placeholder="e.g. B.S. Grewal"/></div>
+        <div class="form-group"><label>Subject *</label><input type="text" id="lb-subject" required placeholder="e.g. Mathematics"/></div>
+        <div class="form-group">
+          <label>Condition *</label>
+          <select id="lb-condition" required>
+            <option value="">Select...</option>
+            <option value="Like New">Like New</option>
+            <option value="Good" selected>Good</option>
+            <option value="Fair">Fair</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Price (Rs.) *</label><input type="number" id="lb-price" required min="0" placeholder="e.g. 150"/></div>
+        <div class="form-group full">
+          <label>Book Photo (Optional)</label>
+          <input type="file" id="lb-photo" accept="image/*" onchange="handlePhotoSelect(event, 'lb')" />
+          <div id="lb-photo-preview" class="photo-preview-wrap" style="display:none;margin-top:8px;">
+            <img id="lb-preview-img" src="" alt="Book Preview" class="photo-preview-thumb" />
+            <button type="button" class="btn-clear-photo" onclick="clearPhotoPreview('lb')" title="Remove photo" aria-label="Remove photo">&#10005;</button>
+          </div>
+        </div>
+        <div class="form-group full"><label>Notes</label><textarea id="lb-notes" rows="2" placeholder="e.g. Highlights on chapter 4, good condition."></textarea></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('listBookModal')">Cancel</button>
+        <button type="submit" class="btn btn-primary">List Book</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 6. Edit Used Book Modal (Requirement 2 & 6: Edit listed book by owner) -->
+<div class="modal-overlay" id="editListingModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Edit Listed Book</h2>
+      <button class="modal-close" onclick="closeModal('editListingModal')">&#10005;</button>
+    </div>
+    <form id="editListingForm" onsubmit="submitEditListing(event)">
+      <input type="hidden" id="el-id" />
+      <div class="form-grid">
+        <div class="form-group full"><label>Book Title *</label><input type="text" id="el-title" required /></div>
+        <div class="form-group"><label>Author *</label><input type="text" id="el-author" required /></div>
+        <div class="form-group"><label>Subject *</label><input type="text" id="el-subject" required /></div>
+        <div class="form-group">
+          <label>Condition *</label>
+          <select id="el-condition" required>
+            <option value="Like New">Like New</option>
+            <option value="Good">Good</option>
+            <option value="Fair">Fair</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Price (Rs.) *</label><input type="number" id="el-price" required min="0" /></div>
+        <div class="form-group full">
+          <label>Book Photo (Optional)</label>
+          <input type="file" id="el-photo" accept="image/*" onchange="handlePhotoSelect(event, 'el')" />
+          <div id="el-photo-preview" class="photo-preview-wrap" style="display:none;margin-top:8px;">
+            <img id="el-preview-img" src="" alt="Book Preview" class="photo-preview-thumb" />
+            <button type="button" class="btn-clear-photo" onclick="clearPhotoPreview('el')" title="Remove photo" aria-label="Remove photo">&#10005;</button>
+          </div>
+        </div>
+        <div class="form-group full"><label>Notes</label><textarea id="el-notes" rows="2"></textarea></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('editListingModal')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Update Listing</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 7. Edit Profile & Login Details Modal (Requirement 9) -->
+<div class="modal-overlay" id="editProfileModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 class="modal-title" id="editProfileModalTitle">Edit Profile &amp; Login Details</h2>
+      <button class="modal-close" onclick="closeModal('editProfileModal')">&#10005;</button>
+    </div>
+    <form id="editProfileForm" onsubmit="submitEditProfile(event)">
+      <div class="form-grid">
+        <div class="form-group full"><label id="ep-name-label">Full Name *</label><input type="text" id="ep-name" required /></div>
+        <div class="form-group full">
+          <label>Change Password (leave blank to keep current)</label>
+          <input type="password" id="ep-password" placeholder="New password" oninput="checkPasswordRequirements('ep-password', 'ep-pwd-rules')" />
+          <div class="pwd-rules-box" id="ep-pwd-rules" style="margin-top:6px;font-size:0.75rem;line-height:1.45;background:var(--bg-card);padding:8px 10px;border-radius:var(--radius-sm);border:1px solid var(--border);">
+            <div style="font-weight:600;margin-bottom:4px;color:var(--text-main);">Password requirements:</div>
+            <div id="ep-pwd-rules-len" class="pwd-rule-item" style="color:var(--text-muted);">&#x25CF; At least 6 characters</div>
+            <div id="ep-pwd-rules-upper" class="pwd-rule-item" style="color:var(--text-muted);">&#x25CF; At least 1 uppercase letter (A-Z)</div>
+            <div id="ep-pwd-rules-lower" class="pwd-rule-item" style="color:var(--text-muted);">&#x25CF; At least 1 lowercase letter (a-z)</div>
+            <div id="ep-pwd-rules-num" class="pwd-rule-item" style="color:var(--text-muted);">&#x25CF; At least 1 number (0-9)</div>
+            <div id="ep-pwd-rules-sym" class="pwd-rule-item" style="color:var(--text-muted);">&#x25CF; At least 1 symbol / special character (!@#$%^&amp;*...)</div>
+          </div>
+        </div>
+        <div class="form-group ep-student-field"><label>Student ID</label><input type="text" id="ep-studentId" disabled style="opacity:0.75;" /></div>
+        <div class="form-group ep-student-field"><label>Email Address (Login ID) *</label><input type="email" id="ep-email" /></div>
+        <div class="form-group ep-student-field"><label>Contact Phone Number</label><input type="tel" id="ep-phone" placeholder="e.g. 9876543210" /></div>
+        <div class="form-group ep-student-field"><label>Course / Major</label><input type="text" id="ep-course" placeholder="e.g. B.Tech CSE" /></div>
+        <div class="form-group ep-student-field">
+          <label>Academic Year</label>
+          <select id="ep-year">
+            <option value="1">Year 1</option>
+            <option value="2">Year 2</option>
+            <option value="3">Year 3</option>
+            <option value="4">Year 4</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer" style="display:flex;justify-content:space-between;align-items:center;">
+        <button type="button" class="btn btn-ghost" onclick="openEditHistory('profile')" style="color:var(--blue);"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>View Edit History</button>
+        <div style="display:flex;gap:8px;">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('editProfileModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 8. Book Detail Modal -->
+<div class="modal-overlay" id="bookDetailModal"><div class="modal"><div class="modal-header"><h2 class="modal-title" id="bookDetailTitle">Book Details</h2><button class="modal-close" onclick="closeModal('bookDetailModal')">&#10005;</button></div><div id="bookDetailContent"></div><div class="modal-footer"><button class="btn btn-ghost" onclick="closeModal('bookDetailModal')">Close</button><button class="btn btn-primary" id="bookDetailIssueBtn" onclick="quickIssueFromDetail()">Issue This Book</button></div></div></div>
+
+<!-- 9. Student Detail Modal -->
+<div class="modal-overlay" id="studentDetailModal"><div class="modal"><div class="modal-header"><h2 class="modal-title">Student Profile</h2><button class="modal-close" onclick="closeModal('studentDetailModal')">&#10005;</button></div><div id="studentDetailContent"></div><div class="modal-footer" id="studentDetailFooter"><div id="studentDetailStatusAction" style="margin-right:auto;"></div><button type="button" class="btn btn-ghost" onclick="openStudentEditHistory()" style="color:var(--blue);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>Edit History</button><button class="btn btn-ghost" onclick="closeModal('studentDetailModal')">Close</button></div></div></div>
+
+<!-- 10. Request Exchange Book Modal -->
+<div class="modal-overlay" id="requestBookModal"><div class="modal"><div class="modal-header"><h2 class="modal-title">Request Book</h2><button class="modal-close" onclick="closeModal('requestBookModal')">&#10005;</button></div><div id="requestBookContent"></div><form id="requestBookForm" onsubmit="submitRequestBook(event)"><div class="form-grid"><div class="form-group full"><label>Message to Seller (optional)</label><textarea id="rb-message" rows="2" placeholder="e.g. Interested in buying this book, when can we meet?"></textarea></div></div><div class="modal-footer"><button type="button" class="btn btn-ghost" onclick="closeModal('requestBookModal')">Cancel</button><button type="submit" class="btn btn-primary">Send Request</button></div></form></div></div>
+
+<!-- 11. Edit History Modal -->
+<div class="modal-overlay" id="editHistoryModal">
+  <div class="modal" style="max-width:760px;width:95%;">
+    <div class="modal-header">
+      <h2 class="modal-title">&#128221; Edit History &amp; Audit Log</h2>
+      <button class="modal-close" onclick="closeModal('editHistoryModal')">&#10005;</button>
+    </div>
+    <div class="modal-body" style="padding:16px 20px;">
+      <div id="editHistoryHeader" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);">
+        <div>
+          <span id="editHistoryTitle" style="font-weight:600;font-size:0.95rem;color:var(--text-main);">Record History</span>
+          <p id="editHistorySubtitle" style="font-size:0.8rem;color:var(--text-muted);margin-top:2px;">Showing authentic modification audit logs.</p>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="loadAndRenderEditHistory()">&#8635; Refresh</button>
+      </div>
+      <div id="editHistoryContent" style="max-height:420px;overflow-y:auto;">
+        <div style="text-align:center;padding:24px;color:var(--text-muted);">Loading edit history...</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-ghost" onclick="closeModal('editHistoryModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
